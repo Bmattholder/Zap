@@ -1,0 +1,18 @@
+.display-ticket {
+    padding-bottom: 1rem;
+    border-radius: 14px;
+    width: 10rem;
+    text-align: center;
+    margin: 1rem auto;
+    background-color: #444654;
+    box-shadow: 0 0 10px #223a83;
+    transition: transform 0.4s ease-out;
+}
+
+.display-ticket h2 {
+    padding-top: .6rem;
+}
+
+.display-ticket:hover {
+    transform: translateY(-3px);
+}

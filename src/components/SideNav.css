@@ -1,0 +1,24 @@
+.side-nav {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 150px;
+    background-color: #444654;
+}
+
+.side-nav a {
+    text-decoration: none;
+    color: #121f46;
+    font-size: large;
+    margin: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.side-nav a:hover {
+    color: royalblue;
+}
+
+.side-nav svg {
+    margin-right: .5rem;
+}
