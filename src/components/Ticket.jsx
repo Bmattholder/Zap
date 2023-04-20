@@ -98,7 +98,7 @@ function Ticket({ id, title, description, priority, status, refresh }) {
             required
           />
           <button onClick={(e) => submitEdit(e, id)}>Update</button>
-          <button onClick={() => setEditMode(!editMode)}>Cancel</button>
+          <button onClick={() => setEditMode(!editMode)}>Cancel </button>
         </form>
       )}
     </div>
