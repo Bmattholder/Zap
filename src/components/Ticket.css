@@ -1,18 +1,73 @@
 .display-ticket {
-    padding-bottom: 1rem;
+    padding: 1rem;
     border-radius: 14px;
-    width: 10rem;
+    width: 100%;
+    max-width: 20rem;
     text-align: center;
     margin: 1rem auto;
-    background-color: #444654;
-    box-shadow: 0 0 10px #223a83;
+    background-color: #222;
+    box-shadow: 0 0 10px #111;
     transition: transform 0.4s ease-out;
+    color: #fff;
 }
 
 .display-ticket h2 {
+    display: inline-block;
     padding-top: .6rem;
+    margin-bottom: 0;
+}
+
+.display-ticket p {
+    margin: 0.5rem 0;
+}
+
+.display-ticket form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.display-ticket input[type="text"] {
+    background-color: #444;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    width: 100%;
+    max-width: 15rem;
+    font-size: 1rem;
+}
+
+.display-ticket button {
+    background-color: #a6a6a6;
+    color: #222;
+    border: none;
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+    margin-top: 1rem;
+    margin-left: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease-out;
+}
+
+.display-ticket button:hover {
+    background-color: #666;
 }
 
 .display-ticket:hover {
     transform: translateY(-3px);
 }
+
+.display-ticket a {
+    margin-top: 1rem;
+    display: inline-block;
+    color: white;
+    text-decoration: none;
+}
+
+.display-ticket a:hover {
+    color: royalblue;
+}
+
+

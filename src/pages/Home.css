@@ -1,3 +1,113 @@
 .home-container {
-    margin-left: 155px;
+    margin-left: 9.375rem;
+    margin-top: 3rem;
+    height: 90vh;
 }
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #282c34;
+    color: #fff;
+}
+
+thead tr {
+    background-color: #3d3d3d;
+    color: #fff;
+}
+
+th {
+    padding: 10px;
+    text-align: left;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #3d3d3d;
+}
+
+tbody tr:hover {
+    background-color: #4e4e4e;
+}
+
+td {
+    padding: 10px;
+}
+
+/* List View */
+.card-list-view {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    background-color: #282c34;
+}
+
+.card-list-view .ticket {
+    width: calc(33.33% - 20px);
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #3d3d3d;
+    color: #fff;
+}
+
+.card-list-view .ticket:hover {
+    background-color: #4e4e4e;
+}
+
+.card-list-view .ticket h2 {
+    margin-top: 0;
+}
+
+.card-list-view .ticket p {
+    margin: 0;
+}
+
+.home-container {
+    background-color: #282c34;
+    color: #fff;
+}
+
+
+.home-nav select {
+    appearance: none;
+    margin: .8rem;
+    float: right;
+    background-color: var(--select-bg-color);
+    color: var(--select-text-color);
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0.5rem 1.5rem;
+    border-radius: 1rem;
+    border: none;
+    box-shadow: none;
+    outline: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    text-align: center;
+}
+
+.home-nav select:hover,
+.home-nav select:focus {
+    background-color: var(--select-hover-bg-color);
+}
+
+.home-nav select option {
+    background-color: var(--select-bg-color);
+    color: var(--select-text-color);
+    font-size: 1rem;
+    font-weight: 600;
+    transition: background-color 0.2s;
+}
+
+.home-nav select option:hover,
+.home-nav select option:focus {
+    background-color: var(--select-hover-bg-color);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --select-bg-color: #3d3d3d;
+        --select-text-color: #fff;
+        --select-hover-bg-color: #4e4e4e;
+    }
+}
+

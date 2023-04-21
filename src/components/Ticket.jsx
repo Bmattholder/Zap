@@ -2,6 +2,8 @@ import React, { useState } from "react";
 
 import "./Ticket.css";
 import axios from "axios";
+import { Link } from "react-router-dom";
+import { FiExternalLink } from "react-icons/fi";
 
 function Ticket({ id, title, description, priority, status, refresh }) {
   const [editMode, setEditMode] = useState(false);
@@ -52,7 +54,11 @@ function Ticket({ id, title, description, priority, status, refresh }) {
     <div className="display-ticket">
       {!editMode ? (
         <>
-          <h2>{title}</h2> <p>{description}</p> <p>{status}</p>{" "}
+          <h2>{title}</h2>{" "}
+          <Link to={`/tickets/${id}`}>
+            <FiExternalLink />
+          </Link>
+          <p>{description}</p> <p>{status}</p>{" "}
           <p>
             <em>{priority}</em>{" "}
           </p>
@@ -98,7 +104,7 @@ function Ticket({ id, title, description, priority, status, refresh }) {
             required
           />
           <button onClick={(e) => submitEdit(e, id)}>Update</button>
-          <button onClick={() => setEditMode(!editMode)}>Cancel </button>
+          <button onClick={() => setEditMode(!editMode)}>Cancel</button>
         </form>
       )}
     </div>
