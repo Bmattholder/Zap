@@ -54,7 +54,7 @@ function Home(props) {
         <table>
           <thead>
             <tr>
-              <th>Title</th>
+              <th>Title </th>
               <th>Description</th>
               <th>Status</th>
               <th>Priority</th>
