@@ -1,7 +1,6 @@
 .home-container {
     margin-left: 9.375rem;
-    margin-top: 3rem;
-    height: 90vh;
+    height: 100vh;
 }
 
 table {
@@ -111,3 +110,6 @@ td {
     }
 }
 
+.active-button {
+    color: red;
+}
