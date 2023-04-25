@@ -63,7 +63,6 @@ function NewTicketForm(props) {
           value={cognomen}
           onChange={onChange}
           placeholder="Description"
-          required
         />
         <input
           type="text"
@@ -72,7 +71,6 @@ function NewTicketForm(props) {
           value={number}
           onChange={onChange}
           placeholder="Status"
-          required
         />
         <input
           type="text"
@@ -81,7 +79,6 @@ function NewTicketForm(props) {
           value={street}
           onChange={onChange}
           placeholder="Priority"
-          required
         />
         <button>Submit</button>
       </form>

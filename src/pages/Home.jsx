@@ -9,6 +9,9 @@ function Home(props) {
   const [showNoTicketsMessage, setShowNoTicketsMessage] = useState(false);
   const [refresh, setRefresh] = useState(false);
   const [listView, setListView] = useState(false);
+  const [page, setPage] = useState(0);
+  const [size, setSize] = useState(3);
+  const [totalPages, setTotalPages] = useState(0);
 
   const refreshHelper = () => {
     setRefresh(!refresh);
@@ -18,14 +21,17 @@ function Home(props) {
     setListView(!listView);
   };
 
+  const url = `http://localhost:8080/api/v1/people?page=${page}&size=${size}`;
+
   useEffect(() => {
     const getData = async () => {
-      const res = await axios.get("http://localhost:8080/api/v1/people");
+      const res = await axios.get(url);
       const data = res.data;
       setTicketList(data.content);
+      setTotalPages(data.totalPages);
     };
     getData();
-  }, [refresh]);
+  }, [url, refresh]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -36,9 +42,25 @@ function Home(props) {
     return () => clearTimeout(timer);
   }, [ticketList]);
 
+  // @todo fix state not updating immediately
+  useEffect(() => {
+    if (listView) {
+      setSize(10);
+    } else {
+      setSize(3);
+    }
+  }, [listView]);
+
+  // @todo add row click to details page
   const handleRowClick = (id) => {
     // props.history.push(`/tickets/${id}`);
     console.log(id);
+  };
+
+  const pageNumbers = Array.from({ length: totalPages }, (_, i) => i);
+
+  const pageChangeHandler = (e, newPage) => {
+    setPage(newPage);
   };
 
   return (
@@ -91,6 +113,28 @@ function Home(props) {
           })}
         </div>
       )}
+      <button disabled={page === 0} onClick={() => setPage(page - 1)}>
+        Prev
+      </button>
+      {pageNumbers.map((number) => {
+        return (
+          <button
+            key={number}
+            onClick={
+              number !== page ? (e) => pageChangeHandler(e, number) : null
+            }
+            className={page === number ? "active-button" : null}
+          >
+            {number + 1}
+          </button>
+        );
+      })}
+      <button
+        disabled={page === totalPages - 1}
+        onClick={() => setPage(page + 1)}
+      >
+        Next
+      </button>
     </div>
   );
 }
