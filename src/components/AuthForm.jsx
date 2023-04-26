@@ -42,7 +42,7 @@ function AuthForm(props) {
         onChange={onChange}
         required
       />
-      <button>Log in</button>
+      <button>Log in </button>
     </form>
   );
 }
