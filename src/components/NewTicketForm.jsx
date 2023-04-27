@@ -10,9 +10,9 @@ function NewTicketForm(props) {
     cognomen: "",
     number: "",
     street: "",
-    city: "default",
-    state: "default",
-    zip: "default",
+    city: "",
+    state: "",
+    zip: "",
   });
 
   const { praenomens, cognomen, number, street, city, state, zip } = formData;
