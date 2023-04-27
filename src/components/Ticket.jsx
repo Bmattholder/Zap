@@ -8,7 +8,7 @@ import { FiExternalLink } from "react-icons/fi";
 function Ticket({ id, title, description, priority, status, refresh }) {
   const [editMode, setEditMode] = useState(false);
   const [editingTicket, setEditingTicket] = useState({
-    praenomens: title,
+    praenomens: [title],
     cognomen: description,
     number: status,
     street: priority,
@@ -29,6 +29,8 @@ function Ticket({ id, title, description, priority, status, refresh }) {
       }));
     }
   };
+
+  console.log(editingTicket);
 
   const submitEdit = async (e, id) => {
     e.preventDefault();

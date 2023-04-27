@@ -32,16 +32,13 @@ td {
     padding: 10px;
 }
 
-/* List View */
 .card-list-view {
+    width: 100%;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
-    background-color: #282c34;
 }
 
 .card-list-view .ticket {
-    width: calc(33.33% - 20px);
     margin-bottom: 20px;
     padding: 10px;
     background-color: #3d3d3d;
@@ -65,14 +62,38 @@ td {
     color: #fff;
 }
 
+.home-nav {
+    border-bottom: 1px solid #3b3b3b;
+    border-left: 1px solid #3b3b3b;
+    background-color: #444654;
+    margin-bottom: 1rem;
+    height: 3rem;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    top: 0
+}
 
-.home-nav select {
-    appearance: none;
-    margin: .8rem;
-    float: right;
+.home-nav input {
+    background-color: var(--select-bg-color);
+    justify-content: center;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 0.5rem;
+    width: 100%;
+    max-width: 15rem;
+    font-size: 1rem;
+}
+
+.home-nav input::placeholder {
+    color: white;
+    font-weight: 300;
+}
+
+.home-nav button {
     background-color: var(--select-bg-color);
     color: var(--select-text-color);
-    font-size: 1rem;
     font-weight: 600;
     padding: 0.5rem 1.5rem;
     border-radius: 1rem;
@@ -84,9 +105,20 @@ td {
     text-align: center;
 }
 
-.home-nav select:hover,
-.home-nav select:focus {
-    background-color: var(--select-hover-bg-color);
+.home-nav select {
+    appearance: none;
+    margin: .8rem;
+    background-color: var(--select-bg-color);
+    color: var(--select-text-color);
+    font-weight: 600;
+    padding: 0.5rem 1.5rem;
+    border-radius: 1rem;
+    border: none;
+    box-shadow: none;
+    outline: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    text-align: center;
 }
 
 .home-nav select option {
@@ -110,6 +142,62 @@ td {
     }
 }
 
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin: 1rem auto;
+}
+
+.pagination button {
+    background-color: #a6a6a6;
+    color: #282c34;
+    border: 1px solid #282c34;
+    border-radius: 5px;
+    padding: 0.5rem 1rem;
+    margin: 0.25rem;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.pagination button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
 .active-button {
-    color: red;
+    background-color: #222 !important;
+    color: white !important;
+}
+
+
+.search {
+    display: flex;
+    align-items: center;
+}
+
+.search input {
+    padding: 5px;
+    font-size: 1rem;
+    border-radius: 6px 0 0 6px ;
+    border: none;
+}
+
+.search input:focus {
+    outline: none;
+}
+
+.search button {
+    border-radius: 0 6px 6px 0;
+    width: 3rem;
+    padding: .5rem;
+    height: 1.75rem;
+    margin-left: 0;
+    border-left: 1px solid #2b2b2b;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.search button:hover {
+    background-color: #2b2b2b;
 }
