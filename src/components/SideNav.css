@@ -22,3 +22,29 @@
 .side-nav svg {
     margin-right: .5rem;
 }
+
+img {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 6px;
+    margin: 0 .25rem 0 0;
+}
+
+.logo {
+    display: flex;
+    justify-content: flex-start;
+    height: 2rem;
+    width: 135px;
+    cursor: pointer;
+    background-color: #212020;
+    padding: .5rem;
+}
+
+.logo h2 {
+    margin-top: 0.1rem;
+    margin-left: 1rem;
+}
+
+.logo h2 {
+    font-family: 'Helvetica Neue', sans-serif;
+}
