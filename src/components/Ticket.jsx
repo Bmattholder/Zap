@@ -63,10 +63,12 @@ function Ticket({ id, title, description, priority, status, refresh }) {
     <div className="display-ticket">
       {!editMode ? (
         <>
-          <h2>{title}</h2>{" "}
           <Link to={`/tickets/${id}`}>
             <FiExternalLink />
           </Link>
+          <div className="title">
+            <h4>{title}</h4>{" "}
+          </div>
           <p>{status}</p>{" "}
           <p>
             <em>{priority}</em>{" "}
@@ -117,8 +119,10 @@ function Ticket({ id, title, description, priority, status, refresh }) {
             placeholder="Priority"
             required
           />
-          <button onClick={(e) => submitEdit(e, id)}>Update</button>
-          <button onClick={() => setEditMode(!editMode)}>Cancel</button>
+          <div className="form-buttons">
+            <button onClick={(e) => submitEdit(e, id)}>Update</button>
+            <button onClick={() => setEditMode(!editMode)}>Cancel</button>
+          </div>
         </form>
       )}
     </div>

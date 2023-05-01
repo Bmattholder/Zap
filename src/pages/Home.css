@@ -42,30 +42,13 @@ td {
     padding: 10px;
 }
 
-.card-list-view {
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
+.card-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 1rem;
+    margin: 1rem;
 }
 
-.card-list-view .ticket {
-    margin-bottom: 20px;
-    padding: 10px;
-    background-color: #3d3d3d;
-    color: #fff;
-}
-
-.card-list-view .ticket:hover {
-    background-color: #4e4e4e;
-}
-
-.card-list-view .ticket h2 {
-    margin-top: 0;
-}
-
-.card-list-view .ticket p {
-    margin: 0;
-}
 
 .home-container {
     background-color: #282c34;
@@ -74,8 +57,7 @@ td {
 
 .home-nav {
     border-bottom: 1px solid #3b3b3b;
-    border-left: 1px solid #3b3b3b;
-    background-color: #444654;
+    background-color: #212020;
     margin-bottom: 1rem;
     height: 3rem;
     display: flex;
@@ -212,4 +194,12 @@ td {
 
 .search button:hover {
     background-color: #2b2b2b;
+}
+
+.card-column {
+    border-right: 1px solid #444654;
+}
+
+.card-column:last-child {
+    border-right: none;
 }

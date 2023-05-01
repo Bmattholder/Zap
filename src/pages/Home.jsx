@@ -14,7 +14,7 @@ function Home(props) {
   const [totalPages, setTotalPages] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOrder, setSortOrder] = useState("asc");
-  const [filterTerm, setFilterTerm] = useState("Open");
+  const [filterTerm, setFilterTerm] = useState("");
 
   const refreshHelper = () => {
     setRefresh(!refresh);
@@ -101,9 +101,9 @@ function Home(props) {
             value={filterTerm}
             onChange={(e) => setFilterTerm(e.target.value)}
           >
-            <option value="open">All Open</option>
-            <option value="">All</option>
-            <option value="Done">Completed Tickets</option>
+            <option value="">All Bugs</option>
+            <option value="Open">All Open</option>
+            <option value="Done">Squashed Bugs</option>
           </select>
         </div>
         <button onClick={listViewToggle}>
@@ -153,21 +153,79 @@ function Home(props) {
           </tbody>
         </table>
       ) : (
-        <div className="card-list-view">
-          {filteredTicketList.map((ticket) => {
-            return (
-              <Ticket
-                key={ticket.id}
-                id={ticket.id}
-                title={ticket.personalName.givenNames[0].value}
-                description={ticket.personalName.surname.value}
-                status={ticket.address.number}
-                priority={ticket.address.street}
-                refresh={refreshHelper}
-                listView={false}
-              />
-            );
-          })}
+        <div className="card-container">
+          <div className="card-column">
+            <h3>Not Started</h3>
+            {filteredTicketList
+              .filter((ticket) => ticket.address.number === "Not Started")
+              .map((ticket) => (
+                <Ticket
+                  key={ticket.id}
+                  id={ticket.id}
+                  title={ticket.personalName.givenNames[0].value}
+                  description={ticket.personalName.surname.value}
+                  status={ticket.address.number}
+                  priority={ticket.address.street}
+                  refresh={refreshHelper}
+                  listView={false}
+                />
+              ))}
+          </div>
+          <div className="card-column">
+            <h3>In Progress</h3>
+            {filteredTicketList
+              .filter(
+                (ticket) =>
+                  ticket.address.number === "In Progress" ||
+                  ticket.address.number === "Waiting"
+              )
+              .map((ticket) => (
+                <Ticket
+                  key={ticket.id}
+                  id={ticket.id}
+                  title={ticket.personalName.givenNames[0].value}
+                  description={ticket.personalName.surname.value}
+                  status={ticket.address.number}
+                  priority={ticket.address.street}
+                  refresh={refreshHelper}
+                  listView={false}
+                />
+              ))}
+          </div>
+          <div className="card-column">
+            <h3>Done</h3>
+            {filteredTicketList
+              .filter((ticket) => ticket.address.number === "Done")
+              .map((ticket) => (
+                <Ticket
+                  key={ticket.id}
+                  id={ticket.id}
+                  title={ticket.personalName.givenNames[0].value}
+                  description={ticket.personalName.surname.value}
+                  status={ticket.address.number}
+                  priority={ticket.address.street}
+                  refresh={refreshHelper}
+                  listView={false}
+                />
+              ))}
+          </div>
+          <div className="card-column">
+            <h3>On Hold</h3>
+            {filteredTicketList
+              .filter((ticket) => ticket.address.number === "On Hold")
+              .map((ticket) => (
+                <Ticket
+                  key={ticket.id}
+                  id={ticket.id}
+                  title={ticket.personalName.givenNames[0].value}
+                  description={ticket.personalName.surname.value}
+                  status={ticket.address.number}
+                  priority={ticket.address.street}
+                  refresh={refreshHelper}
+                  listView={false}
+                />
+              ))}
+          </div>
         </div>
       )}
       <div className="pagination">
