@@ -4,7 +4,7 @@ import Ticket from "../components/Ticket";
 
 import "./Home.css";
 
-function Home() {
+function Home(props) {
   const [ticketList, setTicketList] = useState([]);
   const [showNoTicketsMessage, setShowNoTicketsMessage] = useState(false);
   const [refresh, setRefresh] = useState(false);
@@ -14,7 +14,7 @@ function Home() {
   const [totalPages, setTotalPages] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOrder, setSortOrder] = useState("asc");
-  const [filterTerm, setFilterTerm] = useState("open");
+  const [filterTerm, setFilterTerm] = useState("Open");
 
   const refreshHelper = () => {
     setRefresh(!refresh);
@@ -54,12 +54,6 @@ function Home() {
     }
   }, [listView]);
 
-  // @todo add row click to details page
-  const handleRowClick = (id) => {
-    // props.history.push(`/tickets/${id}`);
-    console.log(id);
-  };
-
   const pageNumbers = Array.from({ length: totalPages }, (_, i) => i);
 
   const pageChangeHandler = (e, newPage) => {
@@ -74,10 +68,10 @@ function Home() {
     .filter((ticket) => {
       if (filterTerm === "") {
         return ticketList;
-      } else if (filterTerm === "completed") {
-        return ticket.address.number.toLowerCase() === "completed";
-      } else if (filterTerm === "open") {
-        return ticket.address.number.toLowerCase() !== "completed";
+      } else if (filterTerm === "Done") {
+        return ticket.address.number === "Done";
+      } else if (filterTerm === "Open") {
+        return ticket.address.number !== "Done";
       }
       return true;
     });
@@ -109,7 +103,7 @@ function Home() {
           >
             <option value="open">All Open</option>
             <option value="">All</option>
-            <option value="completed">Completed Tickets</option>
+            <option value="Done">Completed Tickets</option>
           </select>
         </div>
         <button onClick={listViewToggle}>
@@ -146,8 +140,10 @@ function Home() {
           <tbody>
             {filteredTicketList.map((ticket) => {
               return (
-                <tr key={ticket.id} onClick={() => handleRowClick(ticket.id)}>
-                  <td>{ticket.personalName.givenNames[0].value}</td>
+                <tr key={ticket.id}>
+                  <a href={`http://localhost:3000/tickets/${ticket.id}`}>
+                    <td>{ticket.personalName.givenNames[0].value}</td>
+                  </a>
                   <td>{ticket.personalName.surname.value}</td>
                   <td>{ticket.address.number}</td>
                   <td>{ticket.address.street}</td>

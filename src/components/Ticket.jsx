@@ -52,6 +52,13 @@ function Ticket({ id, title, description, priority, status, refresh }) {
     refresh();
   };
 
+  const onSelectChange = (e) => {
+    setEditingTicket((p) => ({
+      ...p,
+      number: e.target.value,
+    }));
+  };
+
   return (
     <div className="display-ticket">
       {!editMode ? (
@@ -60,7 +67,7 @@ function Ticket({ id, title, description, priority, status, refresh }) {
           <Link to={`/tickets/${id}`}>
             <FiExternalLink />
           </Link>
-          <p>{description}</p> <p>{status}</p>{" "}
+          <p>{status}</p>{" "}
           <p>
             <em>{priority}</em>{" "}
           </p>
@@ -87,15 +94,20 @@ function Ticket({ id, title, description, priority, status, refresh }) {
             placeholder="Description"
             required
           />
-          <input
-            type="text"
+
+          <select
             name="number"
             id="number"
             value={number}
-            onChange={onChange}
-            placeholder="Status"
+            onChange={onSelectChange}
             required
-          />
+          >
+            <option value="Not Started">Not Started</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Waiting">Waiting</option>
+            <option value="Done">Done</option>
+            <option value="On Hold">On Hold</option>
+          </select>
           <input
             type="text"
             name="street"
