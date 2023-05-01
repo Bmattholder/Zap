@@ -4,7 +4,7 @@ import Ticket from "../components/Ticket";
 
 import "./Home.css";
 
-function Home() {
+function Home(props) {
   const [ticketList, setTicketList] = useState([]);
   const [showNoTicketsMessage, setShowNoTicketsMessage] = useState(false);
   const [refresh, setRefresh] = useState(false);
@@ -56,7 +56,7 @@ function Home() {
 
   // @todo add row click to details page
   const handleRowClick = (id) => {
-    // props.history.push(`/tickets/${id}`);
+    props.history.push(`/tickets/${id}`);
     console.log(id);
   };
 
@@ -146,8 +146,10 @@ function Home() {
           <tbody>
             {filteredTicketList.map((ticket) => {
               return (
-                <tr key={ticket.id} onClick={() => handleRowClick(ticket.id)}>
-                  <td>{ticket.personalName.givenNames[0].value}</td>
+                <tr key={ticket.id}>
+                  <a href={`http://localhost:3000/tickets/${ticket.id}`}>
+                    <td>{ticket.personalName.givenNames[0].value}</td>
+                  </a>
                   <td>{ticket.personalName.surname.value}</td>
                   <td>{ticket.address.number}</td>
                   <td>{ticket.address.street}</td>
