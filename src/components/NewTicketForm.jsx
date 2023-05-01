@@ -8,7 +8,7 @@ function NewTicketForm(props) {
   const [formData, setFormData] = useState({
     praenomens: "",
     cognomen: "",
-    number: "",
+    number: "Not Started",
     street: "",
     city: "",
     state: "",
@@ -31,6 +31,13 @@ function NewTicketForm(props) {
         [e.target.name]: e.target.value,
       }));
     }
+  };
+
+  const onSelectChange = (e) => {
+    setFormData((p) => ({
+      ...p,
+      number: e.target.value,
+    }));
   };
 
   const onSubmit = async (e) => {
@@ -64,14 +71,19 @@ function NewTicketForm(props) {
           onChange={onChange}
           placeholder="Description"
         />
-        <input
-          type="text"
+        <select
           name="number"
           id="number"
           value={number}
-          onChange={onChange}
-          placeholder="Status"
-        />
+          onChange={onSelectChange}
+          required
+        >
+          <option value="Not Started">Not Started</option>
+          <option value="In Progress">In Progress</option>
+          <option value="Waiting">Waiting</option>
+          <option value="Done">Done</option>
+          <option value="On Hold">On Hold</option>
+        </select>
         <input
           type="text"
           name="street"

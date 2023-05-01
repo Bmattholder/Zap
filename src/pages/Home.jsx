@@ -14,7 +14,7 @@ function Home(props) {
   const [totalPages, setTotalPages] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOrder, setSortOrder] = useState("asc");
-  const [filterTerm, setFilterTerm] = useState("open");
+  const [filterTerm, setFilterTerm] = useState("Open");
 
   const refreshHelper = () => {
     setRefresh(!refresh);
@@ -54,12 +54,6 @@ function Home(props) {
     }
   }, [listView]);
 
-  // @todo add row click to details page
-  const handleRowClick = (id) => {
-    props.history.push(`/tickets/${id}`);
-    console.log(id);
-  };
-
   const pageNumbers = Array.from({ length: totalPages }, (_, i) => i);
 
   const pageChangeHandler = (e, newPage) => {
@@ -74,10 +68,10 @@ function Home(props) {
     .filter((ticket) => {
       if (filterTerm === "") {
         return ticketList;
-      } else if (filterTerm === "completed") {
-        return ticket.address.number.toLowerCase() === "completed";
-      } else if (filterTerm === "open") {
-        return ticket.address.number.toLowerCase() !== "completed";
+      } else if (filterTerm === "Done") {
+        return ticket.address.number === "Done";
+      } else if (filterTerm === "Open") {
+        return ticket.address.number !== "Done";
       }
       return true;
     });
@@ -109,7 +103,7 @@ function Home(props) {
           >
             <option value="open">All Open</option>
             <option value="">All</option>
-            <option value="completed">Completed Tickets</option>
+            <option value="Done">Completed Tickets</option>
           </select>
         </div>
         <button onClick={listViewToggle}>
