@@ -5,7 +5,15 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { FiExternalLink } from "react-icons/fi";
 
-function Ticket({ id, title, description, priority, status, refresh }) {
+function Ticket({
+  id,
+  title,
+  description,
+  priority,
+  status,
+  refresh,
+  handleDrop,
+}) {
   const [editMode, setEditMode] = useState(false);
   const [editingTicket, setEditingTicket] = useState({
     praenomens: [title],
@@ -29,8 +37,6 @@ function Ticket({ id, title, description, priority, status, refresh }) {
       }));
     }
   };
-
-  console.log(editingTicket);
 
   const submitEdit = async (e, id) => {
     e.preventDefault();
@@ -59,8 +65,23 @@ function Ticket({ id, title, description, priority, status, refresh }) {
     }));
   };
 
+  const dragStart = (e) => {
+    const target = e.target;
+
+    e.dataTransfer.setData(id, target.id);
+
+    setTimeout(() => {
+      target.style.display = "none";
+    }, 0);
+  };
+
   return (
-    <div className="display-ticket">
+    <div
+      className="display-ticket"
+      draggable={true}
+      onDragStart={dragStart}
+      onDrop={() => handleDrop(id)}
+    >
       {!editMode ? (
         <>
           <Link to={`/tickets/${id}`}>

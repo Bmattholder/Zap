@@ -93,6 +93,31 @@ function Home(props) {
     }
   };
 
+  const handleDrop = async (ticketId, newStatus) => {
+    const updatedTicket = {
+      address: {
+        number: newStatus,
+      },
+    };
+    console.log(updatedTicket);
+    try {
+      const response = await axios.patch(
+        `http://localhost:8080/api/v1/tickets/${ticketId}`,
+        updatedTicket
+      );
+      setTicketList((prevList) =>
+        prevList.map((ticket) => {
+          if (ticket.id === ticketId) {
+            return response.data;
+          }
+          return ticket;
+        })
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="home-container">
       <div className="home-nav">
@@ -154,7 +179,11 @@ function Home(props) {
         </table>
       ) : (
         <div className="card-container">
-          <div className="card-column">
+          <div
+            className="card-column"
+            onDragOver={(e) => e.preventDefault()}
+            data-status="Not Started"
+          >
             <h3>Not Started</h3>
             {filteredTicketList
               .filter((ticket) => ticket.address.number === "Not Started")
@@ -167,11 +196,15 @@ function Home(props) {
                   status={ticket.address.number}
                   priority={ticket.address.street}
                   refresh={refreshHelper}
-                  listView={false}
+                  handleDrop={handleDrop}
                 />
               ))}
           </div>
-          <div className="card-column">
+          <div
+            className="card-column"
+            onDragOver={(e) => e.preventDefault()}
+            data-status="In Progress"
+          >
             <h3>In Progress</h3>
             {filteredTicketList
               .filter(
@@ -188,11 +221,15 @@ function Home(props) {
                   status={ticket.address.number}
                   priority={ticket.address.street}
                   refresh={refreshHelper}
-                  listView={false}
+                  handleDrop={handleDrop}
                 />
               ))}
           </div>
-          <div className="card-column">
+          <div
+            className="card-column"
+            onDragOver={(e) => e.preventDefault()}
+            data-status="Done"
+          >
             <h3>Done</h3>
             {filteredTicketList
               .filter((ticket) => ticket.address.number === "Done")
@@ -205,11 +242,15 @@ function Home(props) {
                   status={ticket.address.number}
                   priority={ticket.address.street}
                   refresh={refreshHelper}
-                  listView={false}
+                  handleDrop={handleDrop}
                 />
               ))}
           </div>
-          <div className="card-column">
+          <div
+            className="card-column"
+            onDragOver={(e) => e.preventDefault()}
+            data-status="On Hold"
+          >
             <h3>On Hold</h3>
             {filteredTicketList
               .filter((ticket) => ticket.address.number === "On Hold")
@@ -222,7 +263,7 @@ function Home(props) {
                   status={ticket.address.number}
                   priority={ticket.address.street}
                   refresh={refreshHelper}
-                  listView={false}
+                  handleDrop={handleDrop}
                 />
               ))}
           </div>
