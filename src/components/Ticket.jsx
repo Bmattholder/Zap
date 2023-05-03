@@ -87,6 +87,16 @@ function Ticket({
     draggedTicketHelper(draggedTicket);
   };
 
+  const cancelHelper = () => {
+    setEditMode(!editMode);
+    setEditingTicket({
+      praenomens: [title],
+      cognomen: description,
+      number: status,
+      street: priority,
+    });
+  };
+
   return (
     <div className="display-ticket" draggable={true} onDragStart={dragStart}>
       {!editMode ? (
@@ -149,7 +159,7 @@ function Ticket({
           />
           <div className="form-buttons">
             <button onClick={(e) => submitEdit(e, id)}>Update</button>
-            <button onClick={() => setEditMode(!editMode)}>Cancel</button>
+            <button onClick={cancelHelper}>Cancel</button>
           </div>
         </form>
       )}
