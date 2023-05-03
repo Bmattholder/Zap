@@ -10,18 +10,26 @@ function Home(props) {
   const [refresh, setRefresh] = useState(false);
   const [listView, setListView] = useState(false);
   const [page, setPage] = useState(0);
-  const [size, setSize] = useState(10);
+  const [size, setSize] = useState("*");
   const [totalPages, setTotalPages] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOrder, setSortOrder] = useState("asc");
   const [filterTerm, setFilterTerm] = useState("");
+  const [draggedTicket, setDraggedTicket] = useState(null);
 
   const refreshHelper = () => {
     setRefresh(!refresh);
   };
 
   const listViewToggle = () => {
-    setListView(!listView);
+    if (listView) {
+      setListView(false);
+      setSize("*");
+    } else {
+      setListView(true);
+      setSize("15");
+    }
+    setPage(0);
   };
 
   const url = searchTerm
@@ -50,7 +58,7 @@ function Home(props) {
   // @todo fix state not updating immediately
   useEffect(() => {
     if (listView) {
-      setSize(10);
+      setSize("15");
     }
   }, [listView]);
 
@@ -95,27 +103,22 @@ function Home(props) {
 
   const handleDrop = async (ticketId, newStatus) => {
     const updatedTicket = {
-      address: {
-        number: newStatus,
-      },
+      ...draggedTicket,
+      number: newStatus,
     };
-    console.log(updatedTicket);
     try {
-      const response = await axios.patch(
-        `http://localhost:8080/api/v1/tickets/${ticketId}`,
+      await axios.patch(
+        `http://localhost:8080/api/v1/people/${ticketId}`,
         updatedTicket
-      );
-      setTicketList((prevList) =>
-        prevList.map((ticket) => {
-          if (ticket.id === ticketId) {
-            return response.data;
-          }
-          return ticket;
-        })
       );
     } catch (error) {
       console.log(error);
     }
+    setRefresh(!refresh);
+  };
+
+  const draggedTicketHelper = (prevTicketState) => {
+    setDraggedTicket(prevTicketState);
   };
 
   return (
@@ -153,35 +156,62 @@ function Home(props) {
       </div>
       {showNoTicketsMessage && <h1>No tickets yet...</h1>}
       {listView ? (
-        <table>
-          <thead>
-            <tr>
-              <th>Title</th>
-              <th>Description</th>
-              <th>Status</th>
-              <th>Priority</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredTicketList.map((ticket) => {
+        <>
+          <table>
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Priority</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredTicketList.map((ticket) => {
+                return (
+                  <tr key={ticket.id}>
+                    <a href={`http://localhost:3000/tickets/${ticket.id}`}>
+                      <td>{ticket.personalName.givenNames[0].value}</td>
+                    </a>
+                    <td>{ticket.personalName.surname.value}</td>
+                    <td>{ticket.address.number}</td>
+                    <td>{ticket.address.street}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+          <div className="pagination">
+            <button disabled={page === 0} onClick={() => setPage(page - 1)}>
+              Prev
+            </button>
+            {pageNumbers.map((number) => {
               return (
-                <tr key={ticket.id}>
-                  <a href={`http://localhost:3000/tickets/${ticket.id}`}>
-                    <td>{ticket.personalName.givenNames[0].value}</td>
-                  </a>
-                  <td>{ticket.personalName.surname.value}</td>
-                  <td>{ticket.address.number}</td>
-                  <td>{ticket.address.street}</td>
-                </tr>
+                <button
+                  key={number}
+                  onClick={
+                    number !== page ? (e) => pageChangeHandler(e, number) : null
+                  }
+                  className={page === number ? "active-button" : null}
+                >
+                  {number + 1}
+                </button>
               );
             })}
-          </tbody>
-        </table>
+            <button
+              disabled={page === totalPages - 1}
+              onClick={() => setPage(page + 1)}
+            >
+              Next
+            </button>
+          </div>
+        </>
       ) : (
         <div className="card-container">
           <div
             className="card-column"
             onDragOver={(e) => e.preventDefault()}
+            onDrop={() => handleDrop(draggedTicket.id, "Not Started")}
             data-status="Not Started"
           >
             <h3>Not Started</h3>
@@ -197,6 +227,7 @@ function Home(props) {
                   priority={ticket.address.street}
                   refresh={refreshHelper}
                   handleDrop={handleDrop}
+                  draggedTicketHelper={draggedTicketHelper}
                 />
               ))}
           </div>
@@ -204,6 +235,7 @@ function Home(props) {
             className="card-column"
             onDragOver={(e) => e.preventDefault()}
             data-status="In Progress"
+            onDrop={() => handleDrop(draggedTicket.id, "In Progress")}
           >
             <h3>In Progress</h3>
             {filteredTicketList
@@ -222,6 +254,7 @@ function Home(props) {
                   priority={ticket.address.street}
                   refresh={refreshHelper}
                   handleDrop={handleDrop}
+                  draggedTicketHelper={draggedTicketHelper}
                 />
               ))}
           </div>
@@ -229,6 +262,7 @@ function Home(props) {
             className="card-column"
             onDragOver={(e) => e.preventDefault()}
             data-status="Done"
+            onDrop={() => handleDrop(draggedTicket.id, "Done")}
           >
             <h3>Done</h3>
             {filteredTicketList
@@ -243,6 +277,7 @@ function Home(props) {
                   priority={ticket.address.street}
                   refresh={refreshHelper}
                   handleDrop={handleDrop}
+                  draggedTicketHelper={draggedTicketHelper}
                 />
               ))}
           </div>
@@ -250,6 +285,7 @@ function Home(props) {
             className="card-column"
             onDragOver={(e) => e.preventDefault()}
             data-status="On Hold"
+            onDrop={() => handleDrop(draggedTicket.id, "On Hold")}
           >
             <h3>On Hold</h3>
             {filteredTicketList
@@ -263,36 +299,12 @@ function Home(props) {
                   status={ticket.address.number}
                   priority={ticket.address.street}
                   refresh={refreshHelper}
-                  handleDrop={handleDrop}
+                  draggedTicketHelper={draggedTicketHelper}
                 />
               ))}
           </div>
         </div>
       )}
-      <div className="pagination">
-        <button disabled={page === 0} onClick={() => setPage(page - 1)}>
-          Prev
-        </button>
-        {pageNumbers.map((number) => {
-          return (
-            <button
-              key={number}
-              onClick={
-                number !== page ? (e) => pageChangeHandler(e, number) : null
-              }
-              className={page === number ? "active-button" : null}
-            >
-              {number + 1}
-            </button>
-          );
-        })}
-        <button
-          disabled={page === totalPages - 1}
-          onClick={() => setPage(page + 1)}
-        >
-          Next
-        </button>
-      </div>
     </div>
   );
 }

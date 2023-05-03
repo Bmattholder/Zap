@@ -12,7 +12,7 @@ function Ticket({
   priority,
   status,
   refresh,
-  handleDrop,
+  draggedTicketHelper,
 }) {
   const [editMode, setEditMode] = useState(false);
   const [editingTicket, setEditingTicket] = useState({
@@ -70,18 +70,25 @@ function Ticket({
 
     e.dataTransfer.setData(id, target.id);
 
-    setTimeout(() => {
-      target.style.display = "none";
-    }, 0);
+    // Makes the ticket disappear. The problem is that if you start
+    // the drag and leave it in the same column, the style is still none.
+    // setTimeout(() => {
+    //   target.style.display = "none";
+    // }, 0);
+
+    const draggedTicket = {
+      id,
+      title,
+      description,
+      priority,
+      status,
+    };
+
+    draggedTicketHelper(draggedTicket);
   };
 
   return (
-    <div
-      className="display-ticket"
-      draggable={true}
-      onDragStart={dragStart}
-      onDrop={() => handleDrop(id)}
-    >
+    <div className="display-ticket" draggable={true} onDragStart={dragStart}>
       {!editMode ? (
         <>
           <Link to={`/tickets/${id}`}>
