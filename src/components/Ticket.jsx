@@ -5,7 +5,15 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { FiExternalLink } from "react-icons/fi";
 
-function Ticket({ id, title, description, priority, status, refresh }) {
+function Ticket({
+  id,
+  title,
+  description,
+  priority,
+  status,
+  refresh,
+  draggedTicketHelper,
+}) {
   const [editMode, setEditMode] = useState(false);
   const [editingTicket, setEditingTicket] = useState({
     praenomens: [title],
@@ -29,8 +37,6 @@ function Ticket({ id, title, description, priority, status, refresh }) {
       }));
     }
   };
-
-  console.log(editingTicket);
 
   const submitEdit = async (e, id) => {
     e.preventDefault();
@@ -59,14 +65,38 @@ function Ticket({ id, title, description, priority, status, refresh }) {
     }));
   };
 
+  const dragStart = (e) => {
+    const target = e.target;
+
+    e.dataTransfer.setData(id, target.id);
+
+    // Makes the ticket disappear. The problem is that if you start
+    // the drag and leave it in the same column, the style is still none.
+    // setTimeout(() => {
+    //   target.style.display = "none";
+    // }, 0);
+
+    const draggedTicket = {
+      id,
+      title,
+      description,
+      priority,
+      status,
+    };
+
+    draggedTicketHelper(draggedTicket);
+  };
+
   return (
-    <div className="display-ticket">
+    <div className="display-ticket" draggable={true} onDragStart={dragStart}>
       {!editMode ? (
         <>
-          <h2>{title}</h2>{" "}
           <Link to={`/tickets/${id}`}>
             <FiExternalLink />
           </Link>
+          <div className="title">
+            <h4>{title}</h4>{" "}
+          </div>
           <p>{status}</p>{" "}
           <p>
             <em>{priority}</em>{" "}
@@ -117,8 +147,10 @@ function Ticket({ id, title, description, priority, status, refresh }) {
             placeholder="Priority"
             required
           />
-          <button onClick={(e) => submitEdit(e, id)}>Update</button>
-          <button onClick={() => setEditMode(!editMode)}>Cancel</button>
+          <div className="form-buttons">
+            <button onClick={(e) => submitEdit(e, id)}>Update</button>
+            <button onClick={() => setEditMode(!editMode)}>Cancel</button>
+          </div>
         </form>
       )}
     </div>
