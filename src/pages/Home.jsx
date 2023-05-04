@@ -129,7 +129,7 @@ function Home(props) {
             value={filterTerm}
             onChange={(e) => setFilterTerm(e.target.value)}
           >
-            <option value="">All Bugs</option>
+            <option value="">All Bugs </option>
             <option value="Open">All Open</option>
             <option value="Done">Squashed Bugs</option>
           </select>
