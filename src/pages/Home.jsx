@@ -2,12 +2,19 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Ticket from "../components/Ticket";
 
+import { useSelector, useDispatch } from "react-redux";
+import { ticketListActions } from "../store/slices/ticketListSlice";
+
 import "./Home.css";
 
 function Home(props) {
+  const dispatch = useDispatch();
+  // const ticketList = useSelector((state) => state.ticketList);
+  const refresh = useSelector((state) => state.refresh);
+
   const [ticketList, setTicketList] = useState([]);
   const [showNoTicketsMessage, setShowNoTicketsMessage] = useState(false);
-  const [refresh, setRefresh] = useState(false);
+  // const [refresh, setRefresh] = useState(false);
   const [listView, setListView] = useState(false);
   const [page, setPage] = useState(0);
   const [size, setSize] = useState("*");
@@ -17,8 +24,8 @@ function Home(props) {
   const [filterTerm, setFilterTerm] = useState("");
   const [draggedTicket, setDraggedTicket] = useState(null);
 
-  const refreshHelper = () => {
-    setRefresh(!refresh);
+  const handleRefresh = () => {
+    dispatch(ticketListActions.setRefresh());
   };
 
   const listViewToggle = () => {
@@ -114,7 +121,7 @@ function Home(props) {
     } catch (error) {
       console.log(error);
     }
-    setRefresh(!refresh);
+    handleRefresh();
   };
 
   const draggedTicketHelper = (prevTicketState) => {
@@ -225,7 +232,7 @@ function Home(props) {
                   description={ticket.personalName.surname.value}
                   status={ticket.address.number}
                   priority={ticket.address.street}
-                  refresh={refreshHelper}
+                  refresh={handleRefresh}
                   handleDrop={handleDrop}
                   draggedTicketHelper={draggedTicketHelper}
                 />
@@ -252,7 +259,7 @@ function Home(props) {
                   description={ticket.personalName.surname.value}
                   status={ticket.address.number}
                   priority={ticket.address.street}
-                  refresh={refreshHelper}
+                  refresh={handleRefresh}
                   handleDrop={handleDrop}
                   draggedTicketHelper={draggedTicketHelper}
                 />
@@ -275,7 +282,7 @@ function Home(props) {
                   description={ticket.personalName.surname.value}
                   status={ticket.address.number}
                   priority={ticket.address.street}
-                  refresh={refreshHelper}
+                  refresh={handleRefresh}
                   handleDrop={handleDrop}
                   draggedTicketHelper={draggedTicketHelper}
                 />
@@ -298,7 +305,7 @@ function Home(props) {
                   description={ticket.personalName.surname.value}
                   status={ticket.address.number}
                   priority={ticket.address.street}
-                  refresh={refreshHelper}
+                  refresh={handleRefresh}
                   draggedTicketHelper={draggedTicketHelper}
                 />
               ))}
