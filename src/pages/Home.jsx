@@ -161,7 +161,7 @@ function Home(props) {
           <button onClick={clearSearch}>Clear</button>
         </div>
       </div>
-      {showNoTicketsMessage && <h1>No tickets yet...</h1>}
+
       {listView ? (
         <>
           <table>
@@ -312,6 +312,7 @@ function Home(props) {
           </div>
         </div>
       )}
+      {showNoTicketsMessage && <h1>No tickets yet... </h1>}
     </div>
   );
 }
