@@ -54,20 +54,6 @@ const ticketListSlice = createSlice({
   },
 });
 
-// export const {
-//   setTicketList,
-//   setShowNoTicketsMessage,
-//   setRefresh,
-//   setListView,
-//   setPage,
-//   setSize,
-//   setTotalPages,
-//   setSearchTerm,
-//   setSortOrder,
-//   setFilterTerm,
-//   setDraggedTicket,
-// } = ticketListSlice.reducer;
-
 export const ticketListActions = ticketListSlice.actions;
 
 export default ticketListSlice.reducer;
