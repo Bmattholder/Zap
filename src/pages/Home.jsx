@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import axios from "axios";
 import Ticket from "../components/Ticket";
 
@@ -9,34 +9,33 @@ import "./Home.css";
 
 function Home(props) {
   const dispatch = useDispatch();
-  // const ticketList = useSelector((state) => state.ticketList);
-  const refresh = useSelector((state) => state.refresh);
-
-  const [ticketList, setTicketList] = useState([]);
-  const [showNoTicketsMessage, setShowNoTicketsMessage] = useState(false);
-  // const [refresh, setRefresh] = useState(false);
-  const [listView, setListView] = useState(false);
-  const [page, setPage] = useState(0);
-  const [size, setSize] = useState("*");
-  const [totalPages, setTotalPages] = useState(0);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [sortOrder, setSortOrder] = useState("asc");
-  const [filterTerm, setFilterTerm] = useState("");
-  const [draggedTicket, setDraggedTicket] = useState(null);
+  const ticketList = useSelector((state) => state.ticketList.ticketList);
+  const refresh = useSelector((state) => state.ticketList.refresh);
+  const showNoTicketsMessage = useSelector(
+    (state) => state.ticketList.showNoTicketsMessage
+  );
+  const listView = useSelector((state) => state.ticketList.listView);
+  const page = useSelector((state) => state.ticketList.page);
+  const size = useSelector((state) => state.ticketList.size);
+  const totalPages = useSelector((state) => state.ticketList.totalPages);
+  const searchTerm = useSelector((state) => state.ticketList.searchTerm);
+  const sortOrder = useSelector((state) => state.ticketList.sortOrder);
+  const filterTerm = useSelector((state) => state.ticketList.filterTerm);
+  const draggedTicket = useSelector((state) => state.ticketList.draggedTicket);
 
   const handleRefresh = () => {
     dispatch(ticketListActions.setRefresh());
   };
 
   const listViewToggle = () => {
-    if (listView) {
-      setListView(false);
-      setSize("*");
+    if (listView === true) {
+      dispatch(ticketListActions.setListView(false));
+      dispatch(ticketListActions.setSize("*"));
     } else {
-      setListView(true);
-      setSize("15");
+      dispatch(ticketListActions.setListView(true));
+      dispatch(ticketListActions.setSize("15"));
     }
-    setPage(0);
+    dispatch(ticketListActions.setPage(0));
   };
 
   const url = searchTerm
@@ -47,32 +46,24 @@ function Home(props) {
     const getData = async () => {
       const res = await axios.get(url);
       const data = res.data;
-      setTicketList(data.content);
-      setTotalPages(data.totalPages);
+      dispatch(ticketListActions.setTicketList(data.content));
+      dispatch(ticketListActions.setTotalPages(data.totalPages));
     };
     getData();
   }, [url, refresh]);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      if (ticketList.length === 0) {
-        setShowNoTicketsMessage(true);
-      }
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, [ticketList]);
-
-  // @todo fix state not updating immediately
-  useEffect(() => {
-    if (listView) {
-      setSize("15");
+    if (ticketList.length === 0) {
+      dispatch(ticketListActions.setShowNoTicketsMessage(true));
+    } else {
+      dispatch(ticketListActions.setShowNoTicketsMessage(false));
     }
-  }, [listView]);
+  }, [ticketList, showNoTicketsMessage]);
 
   const pageNumbers = Array.from({ length: totalPages }, (_, i) => i);
 
   const pageChangeHandler = (e, newPage) => {
-    setPage(newPage);
+    dispatch(ticketListActions.setPage(newPage));
   };
 
   const filteredTicketList = ticketList
@@ -92,19 +83,19 @@ function Home(props) {
     });
 
   const handleSearch = (e) => {
-    setSearchTerm(e.target.value);
-    setPage(0);
+    dispatch(ticketListActions.setSearchTerm(e.target.value));
+    dispatch(ticketListActions.setPage(0));
   };
 
   const clearSearch = () => {
-    setSearchTerm("");
+    dispatch(ticketListActions.setSearchTerm(""));
   };
 
   const sortOrderSwitch = () => {
     if (sortOrder === "asc") {
-      setSortOrder("desc");
+      dispatch(ticketListActions.setSortOrder("desc"));
     } else {
-      setSortOrder("asc");
+      dispatch(ticketListActions.setSortOrder("asc"));
     }
   };
 
@@ -125,7 +116,7 @@ function Home(props) {
   };
 
   const draggedTicketHelper = (prevTicketState) => {
-    setDraggedTicket(prevTicketState);
+    dispatch(ticketListActions.setDraggedTicket(prevTicketState));
   };
 
   return (
@@ -134,7 +125,9 @@ function Home(props) {
         <div className="filter">
           <select
             value={filterTerm}
-            onChange={(e) => setFilterTerm(e.target.value)}
+            onChange={(e) =>
+              dispatch(ticketListActions.setFilterTerm(e.target.value))
+            }
           >
             <option value="">All Bugs</option>
             <option value="Open">All Open </option>
@@ -189,7 +182,10 @@ function Home(props) {
             </tbody>
           </table>
           <div className="pagination">
-            <button disabled={page === 0} onClick={() => setPage(page - 1)}>
+            <button
+              disabled={page === 0}
+              onClick={() => dispatch(ticketListActions.setPage(page - 1))}
+            >
               Prev
             </button>
             {pageNumbers.map((number) => {
@@ -207,7 +203,7 @@ function Home(props) {
             })}
             <button
               disabled={page === totalPages - 1}
-              onClick={() => setPage(page + 1)}
+              onClick={() => dispatch(ticketListActions.setPage(page + 1))}
             >
               Next
             </button>
@@ -312,7 +308,7 @@ function Home(props) {
           </div>
         </div>
       )}
-      {showNoTicketsMessage && <h1>No tickets yet... </h1>}
+      {showNoTicketsMessage === true && <h1>No tickets yet... </h1>}
     </div>
   );
 }
