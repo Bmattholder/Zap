@@ -5,6 +5,8 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { FiExternalLink } from "react-icons/fi";
 
+import { useSelector, useDispatch } from "react-redux";
+import { ticketActions } from "../store/slices/ticketSlice";
 function Ticket({
   id,
   title,
@@ -14,7 +16,10 @@ function Ticket({
   refresh,
   draggedTicketHelper,
 }) {
-  const [editMode, setEditMode] = useState(false);
+  const dispatch = useDispatch();
+  const editMode = useSelector((state) => state.ticket.editMode);
+  console.log(editMode);
+  // const [editMode, setEditMode] = useState(false);
   const [editingTicket, setEditingTicket] = useState({
     praenomens: [title],
     cognomen: description,
@@ -46,7 +51,7 @@ function Ticket({
       editingTicket
     );
     console.log(res);
-    setEditMode(!editMode);
+    dispatch(ticketActions.setEditMode());
     refresh();
   };
 
@@ -88,7 +93,7 @@ function Ticket({
   };
 
   const cancelHelper = () => {
-    setEditMode(!editMode);
+    dispatch(ticketActions.setEditMode());
     setEditingTicket({
       praenomens: [title],
       cognomen: description,
@@ -111,7 +116,9 @@ function Ticket({
           <p>
             <em>{priority}</em>{" "}
           </p>
-          <button onClick={() => setEditMode(!editMode)}>Edit</button>
+          <button onClick={() => dispatch(ticketActions.setEditMode())}>
+            Edit
+          </button>
           <button onClick={(e) => onDelete(e, id)}>Delete</button>
         </>
       ) : (
