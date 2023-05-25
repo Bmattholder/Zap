@@ -308,7 +308,7 @@ function Home(props) {
           </div>
         </div>
       )}
-      {showNoTicketsMessage === true && <h1>No tickets yet... </h1>}
+      {showNoTicketsMessage === true && <h1>No tickets yet...</h1>}
     </div>
   );
 }
