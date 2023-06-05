@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-
 import "./Ticket.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { FiExternalLink } from "react-icons/fi";
-
 import { useSelector, useDispatch } from "react-redux";
 import { ticketActions } from "../store/slices/ticketSlice";
+
 function Ticket({
   id,
   title,
@@ -17,9 +16,10 @@ function Ticket({
   draggedTicketHelper,
 }) {
   const dispatch = useDispatch();
-  const editMode = useSelector((state) => state.ticket.editMode);
-  console.log(editMode);
-  // const [editMode, setEditMode] = useState(false);
+  const ticketList = useSelector((state) => state.ticket.ticketList);
+  const ticket = ticketList.find((t) => t.id === id);
+  const editMode = ticket ? ticket.editMode : false;
+
   const [editingTicket, setEditingTicket] = useState({
     praenomens: [title],
     cognomen: description,
@@ -45,42 +45,32 @@ function Ticket({
 
   const submitEdit = async (e, id) => {
     e.preventDefault();
-
     const res = await axios.patch(
       "http://localhost:8080/api/v1/people/" + id,
       editingTicket
     );
     console.log(res);
-    dispatch(ticketActions.setEditMode());
+    dispatch(ticketActions.setEditMode({ ticketId: id, editMode: false }));
     refresh();
   };
 
   const onDelete = async (e, id) => {
     e.preventDefault();
-
     const res = await axios.delete("http://localhost:8080/api/v1/people/" + id);
     console.log(res);
     refresh();
   };
 
   const onSelectChange = (e) => {
-    setEditingTicket((p) => ({
-      ...p,
+    setEditingTicket((prevState) => ({
+      ...prevState,
       number: e.target.value,
     }));
   };
 
   const dragStart = (e) => {
     const target = e.target;
-
     e.dataTransfer.setData(id, target.id);
-
-    // Makes the ticket disappear. The problem is that if you start
-    // the drag and leave it in the same column, the style is still none.
-    // setTimeout(() => {
-    //   target.style.display = "none";
-    // }, 0);
-
     const draggedTicket = {
       id,
       title,
@@ -88,14 +78,13 @@ function Ticket({
       priority,
       status,
     };
-
     draggedTicketHelper(draggedTicket);
   };
 
   const cancelHelper = () => {
-    dispatch(ticketActions.setEditMode());
+    dispatch(ticketActions.setEditMode({ ticketId: id, editMode: false }));
     setEditingTicket({
-      praenomens: [title],
+      praenomens: title,
       cognomen: description,
       number: status,
       street: priority,
@@ -110,13 +99,19 @@ function Ticket({
             <FiExternalLink />
           </Link>
           <div className="title">
-            <h4>{title}</h4>{" "}
+            <h4>{title}</h4>
           </div>
-          <p>{status}</p>{" "}
+          <p>{status}</p>
           <p>
-            <em>{priority}</em>{" "}
+            <em>{priority}</em>
           </p>
-          <button onClick={() => dispatch(ticketActions.setEditMode())}>
+          <button
+            onClick={() =>
+              dispatch(
+                ticketActions.setEditMode({ ticketId: id, editMode: true })
+              )
+            }
+          >
             Edit
           </button>
           <button onClick={(e) => onDelete(e, id)}>Delete</button>

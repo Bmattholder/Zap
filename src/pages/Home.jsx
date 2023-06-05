@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { ticketListActions } from "../store/slices/ticketListSlice";
 
 import "./Home.css";
+import { ticketActions } from "../store/slices/ticketSlice";
 
 function Home(props) {
   const dispatch = useDispatch();
@@ -48,6 +49,7 @@ function Home(props) {
       const data = res.data;
       dispatch(ticketListActions.setTicketList(data.content));
       dispatch(ticketListActions.setTotalPages(data.totalPages));
+      dispatch(ticketActions.setTicket(data.content));
     };
     getData();
   }, [url, refresh]);

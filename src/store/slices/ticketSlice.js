@@ -1,11 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialTicketState = {
-  praenomens: "",
-  cognomen: "",
-  number: "",
-  street: "",
-  editMode: false,
+  ticketList: [],
 };
 
 const ticketSlice = createSlice({
@@ -15,8 +11,13 @@ const ticketSlice = createSlice({
     setTicket(state, action) {
       state.ticketList = action.payload;
     },
-    setEditMode(state) {
-      state.editMode = state.editMode !== true;
+    setEditMode(state, action) {
+      const { ticketId, editMode } = action.payload;
+
+      const ticket = state.ticketList.find((t) => t.id === ticketId);
+      if (ticket) {
+        ticket.editMode = editMode;
+      }
     },
   },
 });
